@@ -1,5 +1,5 @@
-#include "Abstract.h"
 #include <iostream>
+#include "Abstract.h"
 using namespace std;
 class LinkedList: public List{
     Node* head, *tail;
@@ -12,9 +12,9 @@ public:
     }
     void addLast(int num){
         Node* n = new Node{num, nullptr};
-        if(!tail->next && !head->next){
-            tail->next = n;
+        if(size == 0){
             head->next = n;
+            tail->next = n;
         }else{
             tail->next->next = n;
             tail->next = n;
@@ -23,11 +23,13 @@ public:
     }
     void addFirst(int num){
         Node* n = new Node{num, head->next};
-        if(!tail->next){
+        if(size == 0){
+            head->next = n;
             tail->next = n;
+        }else{
+            n->next = head->next;
+            head->next = n;
         }
-        n->next = head->next;
-        head->next = n;
         size++;
     }
     void flip(){
@@ -65,6 +67,19 @@ public:
                 tail->next = prev;
             }
             size--;
+        }
+    }
+    void combineLists(LinkedList* linkedList){
+        if(linkedList->size == 0){
+            return;
+        }else if(size == 0){
+            size = linkedList->getSize();
+            linkedList->size = 0;
+            head = linkedList->head;
+            tail = linkedList->tail;
+        }else{
+            tail->next->next = linkedList->head->next;
+            tail->next = linkedList->tail->next;
         }
     }
     int getSize(){

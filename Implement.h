@@ -1,17 +1,17 @@
 #include <iostream>
 #include "Abstract.h"
 using namespace std;
-class LinkedList: public List{
-    Node* head, *tail;
+class SinglyLinkedList: public SinglyList{
+    SinglyNode* head, *tail;
     int size;
 public:
-    LinkedList(){
-        head = new Node{0, nullptr};
-        tail = new Node{0, nullptr};
+    SinglyLinkedList(){
+        head = new SinglyNode{0, nullptr};
+        tail = new SinglyNode{0, nullptr};
         size = 0;
     }
     void addLast(int num){
-        Node* n = new Node{num, nullptr};
+        SinglyNode* n = new SinglyNode{num, nullptr};
         if(size == 0){
             head->next = n;
             tail->next = n;
@@ -22,7 +22,7 @@ public:
         size++;
     }
     void addFirst(int num){
-        Node* n = new Node{num, head->next};
+        SinglyNode* n = new SinglyNode{num, head->next};
         if(size == 0){
             head->next = n;
             tail->next = n;
@@ -36,14 +36,14 @@ public:
         if(size == 0){
             cout << "Empty List" << endl;
         }else{
-            Node* prev = nullptr, *curr = head->next, *forw = head->next;
+            SinglyNode* prev = nullptr, *curr = head->next, *forw = head->next;
             while(forw){
                 forw = forw->next;
                 curr->next = prev;
                 prev = curr;
                 curr = forw;
             }
-            Node* temp = head->next;
+            SinglyNode* temp = head->next;
             head->next = tail->next;
             tail->next = temp;
         }
@@ -55,7 +55,7 @@ public:
         }else if(num < 0 || num >= size){
             cout << "Invalid Position" << endl;
         }else{
-            Node* curr = head->next, *prev = head;
+            SinglyNode* curr = head->next, *prev = head;
             int i = 0;
             while(i < num){
                 prev = curr;
@@ -69,11 +69,13 @@ public:
             size--;
         }
     }
-    void combineLists(LinkedList* linkedList){
+
+    //This function concatenates 2 Linkedlists
+    void combineLists(SinglyLinkedList* linkedList){
         if(linkedList->size == 0){
             return;
         }else if(size == 0){
-            size = linkedList->getSize();
+            size = linkedList->size;
             linkedList->size = 0;
             head = linkedList->head;
             tail = linkedList->tail;
@@ -82,16 +84,75 @@ public:
             tail->next = linkedList->tail->next;
         }
     }
-    int getSize(){
-        return size;
-    }
+
     void print(){
-        Node* curr = head->next;
-        while(curr){
-            cout << curr->elem << " ";
-            curr = curr->next;
+        if(size == 0){
+            cout << "List is empty";
+        }else{
+            SinglyNode* curr = head->next;
+            while(curr){
+                cout << curr->elem << " ";
+                curr = curr->next;
+            }
+            delete curr;
         }
         cout << endl;
+    }
+    ~SinglyLinkedList(){
+        SinglyNode* curr = head, *deleter = head;
+        while(curr){
+            curr = curr->next;
+            delete deleter;
+            deleter = curr;
+        }
+        delete deleter;
         delete curr;
+        delete tail;
+        cout << "Linked list has been deleted.";
+    }
+};
+
+
+class DoublyLinkedList: public DoublyList{
+DoublyNode *head, *tail;
+int size;
+void addBetween(int num, DoublyNode* forward, DoublyNode* backward){
+    auto* n = new DoublyNode{num, forward, backward};
+    forward->prev = n;
+    backward->next = n;
+    size++;
+}
+public:
+    DoublyLinkedList(){
+        head = new DoublyNode{0, tail, nullptr};
+        tail = new DoublyNode{0, nullptr, head};
+        size = 0;
+    }
+    void addLast(int num) {
+        addBetween(num, tail, tail->prev);
+    }
+    void addFirst(int num){
+        addBetween(num, head->next, head);
+    }
+
+    int nthNodeFromLast(int num){
+        int i = 1;
+        DoublyNode* curr = tail->prev;
+        while(i < num){
+            curr = curr->prev;
+            i++;
+        }
+        return curr->elem;
+    }
+    void print(){
+        if(size != 0){
+            DoublyNode *curr = head->next;
+            while (curr != tail) {
+                cout << curr->elem << " ";
+                curr = curr->next;
+            }
+            cout << endl;
+        }else
+            cout << "List is empty" << endl;
     }
 };

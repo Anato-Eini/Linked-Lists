@@ -1,4 +1,10 @@
-struct Node{
+struct SinglyNode{
     int elem;
-    Node* next;
+    SinglyNode* next;
+};
+
+
+struct DoublyNode{
+    int elem;
+    DoublyNode* next, *prev;
 };

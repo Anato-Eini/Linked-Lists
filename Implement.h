@@ -11,7 +11,7 @@ public:
         size = 0;
     }
     void addLast(int num){
-        SinglyNode* n = new SinglyNode{num, nullptr};
+        auto* n = new SinglyNode{num, nullptr};
         if(size == 0){
             head->next = n;
             tail->next = n;
@@ -84,7 +84,53 @@ public:
             tail->next = linkedList->tail->next;
         }
     }
+    void rotateNodes(){
+        SinglyNode* curr = head->next->next, *prev = head->next;
+        while(curr){
+            int temp = prev->elem;
+            prev->elem = curr->elem;
+            curr->elem = temp;
+            prev = curr->next;
+            if(!prev){
+                break;
+            }
+            curr = prev->next;
+        }
+    }
 
+    //Selection sort
+    void sortList(){
+        SinglyNode* curr = head->next;
+        while (curr->next){
+            SinglyNode* walker = curr->next, *temp = curr;
+            while(walker){
+                if(walker->elem < temp->elem){
+                    temp = walker;
+                }
+                walker = walker->next;
+            }
+            if(temp != curr){
+                int tempInt = temp->elem;
+                temp->elem = curr->elem;
+                curr->elem = tempInt;
+            }
+            curr = curr->next;
+        }
+    }
+    void addAt(int num, int pos){
+        if(pos > size + 1 || pos < 1){
+            cout << "Invalid position" << endl;
+            return;
+        }
+        int a = 1;
+        SinglyNode* curr = head->next, *prev = head;
+        while(a < pos){
+            prev = curr;
+            curr = curr->next;
+            a++;
+        }
+        prev->next = new SinglyNode{num, curr};
+    }
     void print(){
         if(size == 0){
             cout << "List is empty";
@@ -97,6 +143,9 @@ public:
             delete curr;
         }
         cout << endl;
+    }
+    int getSize(){
+        return size;
     }
     ~SinglyLinkedList(){
         SinglyNode* curr = head, *deleter = head;

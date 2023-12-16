@@ -1,5 +1,8 @@
 #include <iostream>
+#include <cmath>
+#include <unordered_map>
 #include "Abstract.h"
+#include <map>
 using namespace std;
 class SinglyLinkedList: public SinglyList{
     SinglyNode* head, *tail; // Sentinels
@@ -71,7 +74,19 @@ public:
     }
 
     void removeAt(int i) override {
+        if(i < 1 || i > size) {
+            cout << "Invalid position" << endl;
+            return;
+        }
         int a = 1;
+        SinglyNode* curr = head->next, *prev = head;
+        while(a < i){
+            a++;
+            prev = curr;
+            curr = curr->next;
+        }
+        prev->next = curr->next;
+        size--;
     }
 
     //This function concatenates 2 Linkedlists
@@ -152,6 +167,21 @@ public:
         return size;
     }
 
+    int mostRepeatedElement() override {
+        unordered_map<int, int> map;
+        SinglyNode* curr = head->next;
+        int mostRepeatedElement = curr->elem, frequency = 1;
+        while (curr){
+            map[curr->elem]++;
+            if(map[curr->elem] > frequency){
+                frequency = map[curr->elem];
+                mostRepeatedElement = curr->elem;
+            }
+            curr = curr->next;
+        }
+        return mostRepeatedElement;
+    }
+
     bool isPresent(int num) override {
         SinglyNode* curr = head->next;
         while (curr){
@@ -191,9 +221,11 @@ public:
         tail = new DoublyNode{0, nullptr, head};
         size = 0;
     }
+
     void addLast(int num) {
         addBetween(num, tail, tail->prev);
     }
+
     void addFirst(int num){
         addBetween(num, head->next, head);
     }
@@ -207,6 +239,17 @@ public:
         }
         return curr->elem;
     }
+
+    bool isPalindrome() override {
+        DoublyNode* first = head->next, *last = tail->prev;
+        while(first->next != last && first != last){
+            if(first->elem != last->elem) return false;
+            first = first->next;
+            last = last->prev;
+        }
+        return true;
+    }
+
     void print(){
         if(size != 0){
             DoublyNode *curr = head->next;

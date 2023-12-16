@@ -11,6 +11,7 @@ public:
     virtual void rotateNodes() = 0;//solves the problem of https://citu.codechum.com/student/study-area/5593
     virtual void sortList() = 0;//solves the problem https://citu.codechum.com/student/study-area/5606
     virtual int getSize() = 0;
+    virtual int mostRepeatedElement() = 0;
     virtual bool isPresent(int num) = 0;
 };
 
@@ -20,4 +21,5 @@ public:
     virtual void addFirst(int) = 0;
     virtual void print() = 0;
     virtual int nthNodeFromLast(int) = 0;//this solves the problem of https://citu.codechum.com/student/study-area/5591
+    virtual bool isPalindrome() = 0;// solves the problem of https://citu.codechum.com/student/study-area/5685
 };

@@ -2,7 +2,7 @@
 #include "Abstract.h"
 using namespace std;
 class SinglyLinkedList: public SinglyList{
-    SinglyNode* head, *tail;
+    SinglyNode* head, *tail; // Sentinels
     int size;
 public:
     SinglyLinkedList(){
@@ -68,6 +68,10 @@ public:
             }
             size--;
         }
+    }
+
+    void removeAt(int i) override {
+        int a = 1;
     }
 
     //This function concatenates 2 Linkedlists
@@ -147,6 +151,16 @@ public:
     int getSize(){
         return size;
     }
+
+    bool isPresent(int num) override {
+        SinglyNode* curr = head->next;
+        while (curr){
+            if(curr->elem == num) return true;
+            curr = curr->next;
+        }
+        return false;
+    }
+
     ~SinglyLinkedList(){
         SinglyNode* curr = head, *deleter = head;
         while(curr){

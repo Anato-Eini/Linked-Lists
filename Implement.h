@@ -217,8 +217,12 @@ void addBetween(int num, DoublyNode* forward, DoublyNode* backward){
 }
 public:
     DoublyLinkedList(){
-        head = new DoublyNode{0, tail, nullptr};
-        tail = new DoublyNode{0, nullptr, head};
+        head = new DoublyNode;
+        tail = new DoublyNode;
+        head->next = tail;
+        head->prev = nullptr;
+        tail->prev = head;
+        tail->next = nullptr;
         size = 0;
     }
 
